@@ -10,13 +10,13 @@ import (
 func main() {
 	//データの検索
 	ti := 0
-	for ti < 500 {
-		db, err := sql.Open("postgres", "user=postgres password=pass dbname=mecab sslmode=disable")
+	for ti < 20000 {
+		db, err := sql.Open("postgres", "user=postgres password=p dbname=mecab sslmode=disable")
 		checkErr(err)
-		var surface_arr [3]string
-		var original_arr [3]string
-		var reading_arr [3]string
-		var length_arr [3]int
+		var surface_arr [5]string
+		var original_arr [5]string
+		var reading_arr [5]string
+		var length_arr [5]int
 
 		tx, err := db.Begin()
 
@@ -24,7 +24,7 @@ func main() {
 			fmt.Println("トランザクションの取得に失敗しました。: %v", err)
 		}
 
-		rows, err := tx.Query("SELECT surface, original, reading FROM words_queue LIMIT 3 FOR UPDATE")
+		rows, err := tx.Query("SELECT surface, original, reading FROM words_queue LIMIT 5 FOR UPDATE")
 		checkErr(err)
 
 		cnt := 0
@@ -42,7 +42,7 @@ func main() {
 			cnt++
 		}
 
-		for i := 0; i < 3; i++ {
+		for i := 0; i < 5; i++ {
 			query := "DELETE FROM words_queue WHERE original = $1"
 			_, err := tx.Exec(query, original_arr[i])
 			checkErr(err)
@@ -56,7 +56,7 @@ func main() {
 			return
 		}
 
-		for j := 0; j < 3; j++ {
+		for j := 0; j < 5; j++ {
 			if length_arr[j] < 3 {
 				stmt, err := db.Prepare("INSERT INTO metadata(original, minimum_length) VALUES($1,$2)")
 				checkErr(err)

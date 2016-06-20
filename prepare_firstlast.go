@@ -51,34 +51,6 @@ func main() {
 		*/
 	}
 
-	//データの挿入
-	/*
-		stmt, err := db.Prepare("INSERT INTO userinfo(username,departname,created) VALUES($1,$2,$3) RETURNING uid")
-		checkErr(err)
-
-		res, err := stmt.Exec("astaxie", "研究開発部門", "2012-12-09")
-		checkErr(err)
-
-		//pgはこの関数をサポートしていません。MySQLのインクリメンタルなIDのようなものが無いためです。
-		id, err := res.LastInsertId()
-		checkErr(err)
-
-		fmt.Println(id)
-	*/
-
-	//データの削除
-	/*
-		stmt, err = db.Prepare("delete from userinfo where uid=$1")
-		checkErr(err)
-
-		res, err = stmt.Exec(1)
-		checkErr(err)
-
-		affect, err = res.RowsAffected()
-		checkErr(err)
-
-		fmt.Println(affect)
-	*/
 	db.Close()
 	fmt.Println("finish")
 
